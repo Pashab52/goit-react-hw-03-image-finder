@@ -6,9 +6,11 @@ export class Searchbar extends Component{
     event.preventDefault();
 
     // чи можна забирати дані з інпуту таким чином ? чи  індекс [1] може змінитися з часом, або в інших браузерах?
-    const searchValue = event.currentTarget[1].value;
-    this.props.handleOnSubmit(searchValue);
-    event.currentTarget.reset();
+    const searchValue = event.currentTarget[1].value.trim();
+    if (searchValue !== '' ) {
+      this.props.handleOnSubmit(searchValue);
+      event.currentTarget.reset();
+    } 
   };
 
 

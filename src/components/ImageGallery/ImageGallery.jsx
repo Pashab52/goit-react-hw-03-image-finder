@@ -7,8 +7,9 @@ export function ImageGallery({ images }) {
             return(
                 <ImageGalleryItem key={image.id}
                     src={image.webformatURL}
-                alt={image.tags}
+                    alt={image.tags}
                 />)
+            
         })}
 
   </ul>;

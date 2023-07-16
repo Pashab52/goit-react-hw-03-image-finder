@@ -2,6 +2,7 @@ import { Component } from "react";
 import { Searchbar } from "./Searchbar/Searchbar";
 import { fetchImg } from "Service/image-service";
 import { ImageGallery } from "./ImageGallery/ImageGallery";
+import { Button } from "./Button/Button";
 
 
 
@@ -11,21 +12,38 @@ export class App extends Component {
     searchValue: '',
     imagesData: null,
     page: 1,
+    showBtnLoadMore: false,
+    identicalValue: false
   };
 
   handleOnSubmit = searchValue =>
-    this.setState({ searchValue, imagesData: [], page: 1 });
+    this.setState({
+      searchValue,
+      imagesData: [],
+      page: 1,
+      showBtnLoadMore: false,
+    });
 
   async componentDidUpdate(prevProps, prevState) {
-    console.log('prevState', prevState)
-    console.log('this.state', this.state);
-    if (prevState.searchValue !== this.state.searchValue && this.state.searchValue !== ''){
-      const imagesData = await fetchImg(this.state.searchValue, this.state.page);
+    console.log('componentDidUpdate');
+
+    if (
+      prevState.searchValue !== this.state.searchValue
+    
+      // this.state.searchValue !== ''
+     || prevState.page !== this.state.page)
+    {
+      const imagesData = await fetchImg(
+        this.state.searchValue,
+        this.state.page
+      );
+      console.log(imagesData.totalHits);
       const normImageData = this.normlazizeImagesData(imagesData.hits);
       this.setState(prevState => ({
         imagesData: [...prevState.imagesData, ...normImageData],
-      }));   
-  }
+        showBtnLoadMore: this.state.page < Math.ceil(imagesData.totalHits / 12),
+      }));
+    }
   }
 
   normlazizeImagesData(imagesData) {
@@ -35,20 +53,25 @@ export class App extends Component {
       largeImageURL,
       tags,
     }));
-   
-}
+  }
 
+  handleOnLoadMoreBtn=() =>{
+    this.setState((prevState) => ({
+      page: prevState.page + 1
+  }))
+}
 
 
   render() {
     return (
       <div>
-
         <Searchbar handleOnSubmit={this.handleOnSubmit} />
-        {this.state.imagesData && <ImageGallery images={ this.state.imagesData} />}
-         
-       
-         
+        {this.state.imagesData && (
+          <ImageGallery images={this.state.imagesData} />
+        )}
+        {this.state.showBtnLoadMore && this.state.imagesData.length > 0 && (
+          <Button onClick={this.handleOnLoadMoreBtn} />
+        )}
       </div>
     );
   }
