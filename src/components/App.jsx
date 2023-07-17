@@ -43,6 +43,7 @@ export class App extends Component {
           "We're sorry, but you've reached the end of search results."
         );
       }
+     
 
         this.setState(prevState => ({
           imagesData: [...prevState.imagesData, ...normImageData],
