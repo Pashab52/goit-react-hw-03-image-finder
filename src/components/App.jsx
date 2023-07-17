@@ -67,6 +67,7 @@ export class App extends Component {
 
   render() {
     return (
+      
       <div >
         <Searchbar handleOnSubmit={this.handleOnSubmit} />
         {this.state.imagesData && (
