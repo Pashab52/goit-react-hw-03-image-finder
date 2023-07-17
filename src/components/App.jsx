@@ -22,7 +22,7 @@ export class App extends Component {
 
   async componentDidUpdate(prevProps, prevState) {
     console.log('componentDidUpdate');
-
+    
     if (
       prevState.searchValue !== this.state.searchValue ||
       // this.state.searchValue !== ''
@@ -38,7 +38,10 @@ export class App extends Component {
         imagesData: [...prevState.imagesData, ...normImageData],
         showBtnLoadMore: this.state.page < Math.ceil(imagesData.totalHits / 12),
         showLoader: false,
-      }));
+          })
+      
+      );
+      
     }
   }
 
@@ -68,19 +71,16 @@ export class App extends Component {
   };
 
 
-
-  //понясніть, будь ласка, чому ця функція працює тільки, як стрілочна і не має доступу до state? 
-  handleImageClick=(modalSrc, alt)=>{
-    // console.log(this.state)
-    this.toggleModal(); 
+  handleImageClick=(modalSrc, alt)=>{ 
     this.setState({
       modalData: { src: modalSrc, alt: alt },
+      showModal: true,
     });
   }
-// а ось ця працює і як стрілочна, і як звичайна.
-  toggleModal() {
-  //  console.log(this.state);
-   this.setState({ showModal: !this.state.showModal})
+
+  closeModal=()=> {
+ console.log('toggleModal');
+   this.setState({ showModal: false})
   }
 
 
@@ -103,7 +103,7 @@ export class App extends Component {
           )}
 
         {this.state.showModal && (
-          <Modal>
+          <Modal onModalClose={this.closeModal}>
             <img
               className="modal"
               src={this.state.modalData.src}
