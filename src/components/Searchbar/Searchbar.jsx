@@ -1,9 +1,12 @@
-import { Children, Component } from "react";
+import {Component } from "react";
+
 
 export class Searchbar extends Component{
 
+ 
   handleOnSubmit = event => {
     event.preventDefault();
+
 
     // чи можна забирати дані з інпуту таким чином ? чи  індекс [1] може змінитися з часом, або в інших браузерах?
     const searchValue = event.currentTarget[1].value.trim();
@@ -17,7 +20,6 @@ export class Searchbar extends Component{
     render() {
         return (
           <header className="searchbar">
-        
             <form className="form" onSubmit={this.handleOnSubmit}>
               <button type="submit" className="button">
                 <span className="button-label">Search</span>
