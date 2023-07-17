@@ -3,8 +3,10 @@ export function Button({onClick}) {
     
 
     return (
-      <button onClick={()=>onClick()} className="button" type="button">
-        Load more
-      </button>
-    );
+      <div className="wrap">
+        <button onClick={() => onClick()} className="button-load" type="button">
+          Load more
+        </button>
+      </div>
+            );
 }

@@ -1,4 +1,4 @@
-import { Component } from "react";
+import { Children, Component } from "react";
 
 export class Searchbar extends Component{
 
@@ -17,6 +17,7 @@ export class Searchbar extends Component{
     render() {
         return (
           <header className="searchbar">
+        
             <form className="form" onSubmit={this.handleOnSubmit}>
               <button type="submit" className="button">
                 <span className="button-label">Search</span>
