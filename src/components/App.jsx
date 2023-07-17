@@ -4,6 +4,7 @@ import { fetchImg } from "Service/image-service";
 import { ImageGallery } from "./ImageGallery/ImageGallery";
 import { Button } from "./Button/Button";
 import { Loader } from "./Loader/Loader";
+import { Modal } from "./Modal/Modal";
 
 
 
@@ -16,16 +17,8 @@ export class App extends Component {
     showBtnLoadMore: false,
     identicalValue: false,
     showLoader: false,
+    showModal: false
   };
-
-  handleOnSubmit = searchValue =>
-    this.setState({
-      searchValue,
-      imagesData: [],
-      page: 1,
-      showBtnLoadMore: false,
-      showLoader: true,
-    });
 
   async componentDidUpdate(prevProps, prevState) {
     console.log('componentDidUpdate');
@@ -44,10 +37,19 @@ export class App extends Component {
       this.setState(prevState => ({
         imagesData: [...prevState.imagesData, ...normImageData],
         showBtnLoadMore: this.state.page < Math.ceil(imagesData.totalHits / 12),
-        showLoader: false
+        showLoader: false,
       }));
     }
   }
+
+  handleOnSubmit = searchValue =>
+    this.setState({
+      searchValue,
+      imagesData: [],
+      page: 1,
+      showBtnLoadMore: false,
+      showLoader: true,
+    });
 
   normlazizeImagesData(imagesData) {
     return imagesData.map(({ id, webformatURL, largeImageURL, tags }) => ({
@@ -61,14 +63,13 @@ export class App extends Component {
   handleOnLoadMoreBtn = () => {
     this.setState(prevState => ({
       page: prevState.page + 1,
-      showLoader: true
+      showLoader: true,
     }));
   };
 
   render() {
     return (
-      
-      <div >
+      <div>
         <Searchbar handleOnSubmit={this.handleOnSubmit} />
         {this.state.imagesData && (
           <ImageGallery images={this.state.imagesData} />
@@ -80,6 +81,8 @@ export class App extends Component {
           !this.state.showLoader && (
             <Button onClick={this.handleOnLoadMoreBtn} />
           )}
+
+        {this.state.showModal && <Modal />}
       </div>
     );
   }
