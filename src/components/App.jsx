@@ -5,7 +5,8 @@ import { ImageGallery } from "./ImageGallery/ImageGallery";
 import { Button } from "./Button/Button";
 import { Loader } from "./Loader/Loader";
 import { Modal } from "./Modal/Modal";
-
+import Notiflix from 'notiflix';
+import '../Utils/Notify'
 
 
 
@@ -22,6 +23,7 @@ export class App extends Component {
 
   async componentDidUpdate(prevProps, prevState) {
     
+ 
     if (
       prevState.searchValue !== this.state.searchValue ||
       // this.state.searchValue !== ''
@@ -32,16 +34,27 @@ export class App extends Component {
         this.state.page
       );
       const normImageData = this.normlazizeImagesData(imagesData.hits);
-      this.setState(prevState => ({
-        imagesData: [...prevState.imagesData, ...normImageData],
-        showBtnLoadMore: this.state.page < Math.ceil(imagesData.totalHits / 12),
-        showLoader: false,
-          })
-      
-      );
+        
+      if (imagesData.totalHits === 0) {
+        Notiflix.Notify.info('Sorry. There are no images ... 😭');
+      }
+      if (this.state.page === Math.ceil(imagesData.totalHits / 12)){
+        Notiflix.Notify.info(
+          "We're sorry, but you've reached the end of search results."
+        );
+      }
+
+        this.setState(prevState => ({
+          imagesData: [...prevState.imagesData, ...normImageData],
+          showBtnLoadMore:
+            this.state.page < Math.ceil(imagesData.totalHits / 12),
+          showLoader: false,
+        }));
       
     }
   }
+
+  
 
   handleOnSubmit = searchValue =>
     this.setState({
