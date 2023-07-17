@@ -15,9 +15,9 @@ export class App extends Component {
     imagesData: null,
     page: 1,
     showBtnLoadMore: false,
-    identicalValue: false,
     showLoader: false,
-    showModal: false
+    showModal: false,
+    modalData:null
   };
 
   async componentDidUpdate(prevProps, prevState) {
@@ -67,12 +67,32 @@ export class App extends Component {
     }));
   };
 
+
+
+  //понясніть, будь ласка, чому ця функція працює тільки, як стрілочна і не має доступу до state? 
+  handleImageClick=(modalSrc, alt)=>{
+    // console.log(this.state)
+    this.toggleModal(); 
+    this.setState({
+      modalData: { src: modalSrc, alt: alt },
+    });
+  }
+// а ось ця працює і як стрілочна, і як звичайна.
+  toggleModal() {
+  //  console.log(this.state);
+   this.setState({ showModal: !this.state.showModal})
+  }
+
+
   render() {
     return (
       <div>
         <Searchbar handleOnSubmit={this.handleOnSubmit} />
         {this.state.imagesData && (
-          <ImageGallery images={this.state.imagesData} />
+          <ImageGallery
+            images={this.state.imagesData}
+            onImgClick={this.handleImageClick}
+          />
         )}
         {this.state.showLoader && <Loader />}
 
@@ -82,7 +102,15 @@ export class App extends Component {
             <Button onClick={this.handleOnLoadMoreBtn} />
           )}
 
-        {this.state.showModal && <Modal />}
+        {this.state.showModal && (
+          <Modal>
+            <img
+              className="modal"
+              src={this.state.modalData.src}
+              alt={this.state.modalData.alt}
+            />
+          </Modal>
+        )}
       </div>
     );
   }
