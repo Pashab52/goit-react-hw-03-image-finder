@@ -21,7 +21,6 @@ export class App extends Component {
   };
 
   async componentDidUpdate(prevProps, prevState) {
-    console.log('componentDidUpdate');
     
     if (
       prevState.searchValue !== this.state.searchValue ||
@@ -32,7 +31,6 @@ export class App extends Component {
         this.state.searchValue,
         this.state.page
       );
-      console.log(imagesData.totalHits);
       const normImageData = this.normlazizeImagesData(imagesData.hits);
       this.setState(prevState => ({
         imagesData: [...prevState.imagesData, ...normImageData],
@@ -79,7 +77,6 @@ export class App extends Component {
   }
 
   closeModal=()=> {
- console.log('toggleModal');
    this.setState({ showModal: false})
   }
 

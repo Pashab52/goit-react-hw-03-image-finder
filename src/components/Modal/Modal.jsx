@@ -1,22 +1,31 @@
 import { createPortal } from 'react-dom';
 import { Component } from 'react';
+import PropTypes from 'prop-types';
 
 export class Modal extends Component {
+  static propTypes = {
+    onModalClose: PropTypes.func.isRequired,
+  };
 
   componentDidMount() {
-    console.log('componentDidMount');
-    window.addEventListener('keydown', (event) => {
-      if (event.code === 'Escape') {
-        this.props.onModalClose();
-      }
-    })
+    window.addEventListener('keydown', this.handleKeyDown);
   }
 
-  handleOverlayClick=(event)=> {
-    if (event.currentTarget === event.target) {
-    this.props.onModalClose();
+  componentWillUnmount() {
+    window.removeEventListener('keydown', this.handleKeyDown);
   }
-}
+
+  handleKeyDown = event => {
+    if (event.code === 'Escape') {
+      this.props.onModalClose();
+    }
+  };
+
+  handleOverlayClick = event => {
+    if (event.currentTarget === event.target) {
+      this.props.onModalClose();
+    }
+  };
 
   modalRoot = document.querySelector('#modal-root');
 

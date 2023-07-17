@@ -1,4 +1,5 @@
 import { ImageGalleryItem } from "components/ImageGalleryItem/ImageGalleryItem"; 
+import PropTypes from 'prop-types';
 
 export function ImageGallery({ images, onImgClick }) {
   return (
@@ -17,3 +18,7 @@ export function ImageGallery({ images, onImgClick }) {
     </ul>
   );
 }
+
+ImageGallery.protoType = {
+  images: PropTypes.arrayOf(PropTypes.shape({id: PropTypes.number.isRequired}).isRequired).isRequired,
+};
