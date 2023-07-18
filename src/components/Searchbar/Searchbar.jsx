@@ -28,6 +28,7 @@ export class Searchbar extends Component {
       Notiflix.Notify.info(
         'Нou already searched for this, please enter a different search word'
       );
+      this.setState({ searchValue: '' });
     } else {
       const searchValue = this.state.searchValue.trim();
 
