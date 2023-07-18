@@ -1,22 +1,43 @@
 import {Component } from "react";
 import PropTypes from 'prop-types';
 import Notiflix from 'notiflix';
+
+
 export class Searchbar extends Component {
   static propTypes = {
     handleOnSubmit: PropTypes.func.isRequired,
   };
 
+  state = {
+    searchValue: '',
+  };
+
+  handleOnChangeInput = event => {
+    this.setState({ searchValue: event.currentTarget.value });
+  };
+
+  // Виправив! Але виліз один косяк, якщо два рази вводити одне і те саме значення для пошуку(до речі в задачі з нашого практичного заняття теж він присутній).
+  // Виправив то додатковою перевіркою(передача пропса з апп). Це дуже класна практика щось перероблювати, але чи дійсно є потреба робити контрольовану форму,
+  //  якщо є тільки один інпут для пошуку? Дякую!  ПС: вибачте за ті записки у коді :)
   handleOnSubmit = event => {
     event.preventDefault();
+    if (
+      this.props.prevSearchValue === this.state.searchValue &&
+      this.state.searchValue !== ''
+    ) {
+      Notiflix.Notify.info(
+        'Нou already searched for this, please enter a different search word'
+      );
+    } else {
+      const searchValue = this.state.searchValue.trim();
 
-    // чи можна забирати дані з інпуту таким чином ? чи  індекс [1] може змінитися з часом, або в інших браузерах?
-    const searchValue = event.currentTarget[1].value.trim();
-     if (searchValue === '') {
-       Notiflix.Notify.info('Please fill out this field');
-     }
-    if (searchValue !== '') {
-      this.props.handleOnSubmit(searchValue);
-      event.currentTarget.reset();
+      if (searchValue === '') {
+        Notiflix.Notify.info('Please fill out this field');
+      }
+      if (searchValue !== '') {
+        this.props.handleOnSubmit(searchValue);
+        this.setState({ searchValue: '' });
+      }
     }
   };
 
@@ -34,7 +55,8 @@ export class Searchbar extends Component {
             autoComplete="off"
             autoFocus
             placeholder="Search images and photos"
-            
+            onChange={this.handleOnChangeInput}
+            value={this.state.searchValue}
           />
         </form>
       </header>

@@ -22,13 +22,13 @@ export class App extends Component {
   };
 
   async componentDidUpdate(prevProps, prevState) {
-    
  
     if (
       prevState.searchValue !== this.state.searchValue ||
       // this.state.searchValue !== ''
       prevState.page !== this.state.page
     ) {
+
       const imagesData = await fetchImg(
         this.state.searchValue,
         this.state.page
@@ -53,6 +53,7 @@ export class App extends Component {
         }));
       
     }
+    
   }
 
   
@@ -98,7 +99,9 @@ export class App extends Component {
   render() {
     return (
       <div>
-        <Searchbar handleOnSubmit={this.handleOnSubmit} />
+        <Searchbar handleOnSubmit={this.handleOnSubmit}
+        prevSearchValue= {this.state.searchValue}
+        />
         {this.state.imagesData && (
           <ImageGallery
             images={this.state.imagesData}
