@@ -35,7 +35,7 @@ export class App extends Component {
       );
       const normImageData = this.normlazizeImagesData(imagesData.hits);
         
-      if (imagesData.totalHits !== 0) {
+      if (imagesData.totalHits !== 0 && this.state.page ===1) {
           Notiflix.Notify.success(
             `Hooray! We find ${imagesData.totalHits} images`
           );
