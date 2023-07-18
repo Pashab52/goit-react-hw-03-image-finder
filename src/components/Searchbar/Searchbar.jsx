@@ -28,7 +28,6 @@ export class Searchbar extends Component {
       Notiflix.Notify.info(
         'Нou already searched for this, please enter a different search word'
       );
-      this.setState({ searchValue: '' });
     } else {
       const searchValue = this.state.searchValue.trim();
 
@@ -37,9 +36,9 @@ export class Searchbar extends Component {
       }
       if (searchValue !== '') {
         this.props.handleOnSubmit(searchValue);
-        this.setState({ searchValue: '' });
       }
     }
+    this.setState({ searchValue: '' });
   };
 
   render() {
