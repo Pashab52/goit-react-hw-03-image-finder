@@ -35,15 +35,21 @@ export class App extends Component {
       );
       const normImageData = this.normlazizeImagesData(imagesData.hits);
         
+      if (imagesData.totalHits !== 0) {
+          Notiflix.Notify.success(
+            `Hooray! We find ${imagesData.totalHits} images`
+          );
+        }
+
       if (imagesData.totalHits === 0) {
-        Notiflix.Notify.info('Sorry. There are no images ... 😭');
+        Notiflix.Notify.failure('Sorry. There are no images ... 😭');
       }
       if (this.state.page === Math.ceil(imagesData.totalHits / 12)){
         Notiflix.Notify.info(
           "We're sorry, but you've reached the end of search results."
         );
       }
-     
+      
 
         this.setState(prevState => ({
           imagesData: [...prevState.imagesData, ...normImageData],
